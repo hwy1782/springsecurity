@@ -31,6 +31,9 @@ public class LdapUserDetailsService implements UserDetailsService {
   private LdapTemplate ldapTemplate;
 
   @Override
+  /**
+   * 查询方法参考：https://memorynotfound.com/spring-boot-spring-ldap-advanced-ldap-queries-example/
+   */
   public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
     LdapQuery query = query()
         .searchScope(SearchScope.SUBTREE)
