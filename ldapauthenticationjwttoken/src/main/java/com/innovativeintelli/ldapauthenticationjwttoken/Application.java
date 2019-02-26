@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 
 @SpringBootApplication
-@EntityScan(basePackageClasses = {LDAPAuthenticationJWTTokenApplication.class})
-public class LDAPAuthenticationJWTTokenApplication {
+@EntityScan(basePackageClasses = {Application.class})
+public class Application {
 	
 	@PostConstruct
 	void init() {
@@ -19,6 +19,6 @@ public class LDAPAuthenticationJWTTokenApplication {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(LDAPAuthenticationJWTTokenApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }
