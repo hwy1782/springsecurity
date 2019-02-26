@@ -4,6 +4,7 @@ import com.innovativeintelli.ldapauthenticationjwttoken.BaseTests;
 import java.util.List;
 import javax.annotation.Resource;
 import org.junit.Test;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,7 +19,8 @@ public class LdapUserDetailsServiceTest extends BaseTests {
 
   @Test
   public void loadUserByUsername() {
-    detailsService.loadUserByUsername("");
+    UserDetails userDetails = detailsService.loadUserByUsername("john");
+    System.out.printf(userDetails.getUsername());
   }
 
   @Test
