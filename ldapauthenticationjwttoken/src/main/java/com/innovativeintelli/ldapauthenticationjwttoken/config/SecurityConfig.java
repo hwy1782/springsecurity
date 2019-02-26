@@ -20,58 +20,57 @@ import com.innovativeintelli.ldapauthenticationjwttoken.security.JwtAuthenticati
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true
+    securedEnabled = true,
+    jsr250Enabled = true,
+    prePostEnabled = true
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	
-	  @Override
-	    protected void configure(HttpSecurity http) throws Exception {
-	        http
-	        		.csrf()
-	        			.disable()
-	        		.cors()
-	        			.disable()
-	        		.exceptionHandling()
-	        			.authenticationEntryPoint(unauthorizedHandler)
-	        		.and()
-	                .authorizeRequests()
-	                    .antMatchers("/api/auth/**").permitAll()
-	                    .anyRequest().authenticated();
-	    }
-
-	    @Override
-	    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-	    	//Good to use BcryptEncoder for spring 5.0
-	        auth
-	                .ldapAuthentication()
-	                    .userDnPatterns("uid={0},ou=people")
-	                    .groupSearchBase("ou=groups")
-	                .contextSource(contextSource())
-	                .passwordCompare()
-	                    .passwordEncoder(new LdapShaPasswordEncoder())
-	                    .passwordAttribute("userPassword");
-	    }
-	    
-	    
-
-    @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
 
 
-    @Bean(BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+        .csrf()
+        .disable()
+        .cors()
+        .disable()
+        .exceptionHandling()
+        .authenticationEntryPoint(unauthorizedHandler)
+        .and()
+        .authorizeRequests()
+        .antMatchers("/api/auth/**").permitAll()
+        .anyRequest().authenticated();
+  }
 
-    @Bean
-    public DefaultSpringSecurityContextSource contextSource() {
-        return  new DefaultSpringSecurityContextSource(
-                Collections.singletonList("ldap://localhost:12345"), "dc=innovativeintelli,dc=com");
-    }
-    
-    
+  @Override
+  public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    //Good to use BcryptEncoder for spring 5.0
+    auth
+        .ldapAuthentication()
+        .userDnPatterns("uid={0},ou=people")
+        .groupSearchBase("ou=groups")
+        .contextSource(contextSource())
+        .passwordCompare()
+        .passwordEncoder(new LdapShaPasswordEncoder())
+        .passwordAttribute("userPassword");
+  }
+
+
+  @Autowired
+  private JwtAuthenticationEntryPoint unauthorizedHandler;
+
+
+  @Bean(BeanIds.AUTHENTICATION_MANAGER)
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
+
+  @Bean
+  public DefaultSpringSecurityContextSource contextSource() {
+    return new DefaultSpringSecurityContextSource(
+        Collections.singletonList("ldap://localhost:12345"), "dc=innovativeintelli,dc=com");
+  }
+
+
 }
