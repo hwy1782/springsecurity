@@ -2,7 +2,13 @@ package com.innovativeintelli.ldapauthenticationjwttoken.security;
 
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
+import com.unboundid.ldap.sdk.SearchResult;
+import java.util.List;
+import javax.naming.NamingEnumeration;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.SearchControls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.NamingException;
 import org.springframework.ldap.core.AttributesMapper;
@@ -44,10 +50,12 @@ public class LdapUserDetailsService implements UserDetailsService {
         .where("objectclass").is("person")
         .and("sn").not().is(name)
         .and("sn").like("j*hn")
+
         .and("uid").isPresent();
 
     return ldapTemplate.search(query, new PersonAttributesMapper()).get(0);
   }
+
 
   /**
    * Custom person attributes mapper, maps the attributes to the person POJO
@@ -66,6 +74,19 @@ public class LdapUserDetailsService implements UserDetailsService {
 //      }
       return person;
     }
+  }
+
+  public List<String> getPersonByName(String name) {
+
+    LdapQuery query = query()
+        // 返回的属性
+        .attributes("cn", "uid")
+        .where("objectclass").is("person")
+        .and("uid").is(name);
+
+    //查询每一个entry的"cn"值
+    return ldapTemplate
+        .search(query, (AttributesMapper<String>) attrs -> (String) attrs.get("cn").get());
   }
 
 
