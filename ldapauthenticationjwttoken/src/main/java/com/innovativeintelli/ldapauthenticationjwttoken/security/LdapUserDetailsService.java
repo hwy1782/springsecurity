@@ -2,13 +2,8 @@ package com.innovativeintelli.ldapauthenticationjwttoken.security;
 
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
-import com.unboundid.ldap.sdk.SearchResult;
 import java.util.List;
-import javax.naming.NamingEnumeration;
-import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.SearchControls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.NamingException;
 import org.springframework.ldap.core.AttributesMapper;
