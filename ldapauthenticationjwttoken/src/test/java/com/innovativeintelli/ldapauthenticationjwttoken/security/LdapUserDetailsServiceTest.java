@@ -3,6 +3,7 @@ package com.innovativeintelli.ldapauthenticationjwttoken.security;
 import com.innovativeintelli.ldapauthenticationjwttoken.BaseTests;
 import java.util.List;
 import javax.annotation.Resource;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -21,12 +22,14 @@ public class LdapUserDetailsServiceTest extends BaseTests {
   public void loadUserByUsername() {
     UserDetails userDetails = detailsService.loadUserByUsername("john");
     System.out.printf(userDetails.getUsername());
+    Assertions.assertThat(userDetails).isNotNull();
   }
 
   @Test
   public void getPersonByName() {
     List<String> names = detailsService.getPersonByName("john");
     System.out.printf(names.get(0));
+    Assertions.assertThat(names).isNotNull();
   }
 
 
